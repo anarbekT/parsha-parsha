@@ -11,6 +11,7 @@ import com.example.config.DemoConfig;
 @Import(value={DemoConfig.class})
 @ComponentScan(basePackages={"com.example","com.example.ui"})
 public class Demo1Application {
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(Demo1Application.class, args);
