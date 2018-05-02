@@ -8,7 +8,7 @@ import java.util.List;
 
 public class StopWords {
 
-	private static final String FILENAME = "T:\\CSSE-141k\\meridianSystems\\video\\task1\\demo_1\\src\\main\\resources\\stop_words.txt";
+	private static final String FILENAME = "src\\main\\resources\\stop_words.txt";
 	private static List<String> stopWordsList;
 
 	public StopWords() {
@@ -23,7 +23,7 @@ public class StopWords {
 			String sCurrentLine;
 
 			while ((sCurrentLine = br.readLine()) != null) {
-				System.out.println(sCurrentLine);
+//				System.out.println(sCurrentLine);
 				stopWordsList.add(sCurrentLine);
 			}
 
