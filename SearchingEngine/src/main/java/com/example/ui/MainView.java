@@ -34,6 +34,11 @@ public class MainView extends VerticalLayout implements View {
 	public MainView() {
 		init();
 		generateUI();
+		bindEvent();
+	}
+
+	private void bindEvent() {
+		btnSearch.addClickListener(event -> doSearch());		
 	}
 
 	private void init() {
@@ -72,7 +77,6 @@ public class MainView extends VerticalLayout implements View {
 
 		btnSearch.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		btnSearch.setIcon(VaadinIcons.SEARCH);
-		btnSearch.addClickListener(event -> doSearch());
 
 		textSearch.focus();
 		btnSearch.setClickShortcut(ShortcutAction.KeyCode.ENTER);

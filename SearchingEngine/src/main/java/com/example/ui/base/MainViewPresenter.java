@@ -1,9 +1,10 @@
 package com.example.ui.base;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.entities.MyRequest;
-import com.example.parser.Stemmer;
 import com.example.service.MyRequestService;
 import com.example.webservice.WebScrap;
 
@@ -11,9 +12,6 @@ public class MainViewPresenter extends AbstractBasePresenter{
 	
     @Autowired
     private MyRequestService service;
-    
-    @Autowired
-    private Stemmer stemmer;
     
     private WebScrap webService = new WebScrap();
     
@@ -43,8 +41,15 @@ public class MainViewPresenter extends AbstractBasePresenter{
     }
 
 	public MyRequest analiseAndSendRequest(String requestedText) {
-		String removeStopWords = stemmer.removeStopWords(requestedText);
-		MyRequest sendRequest = sendRequest(removeStopWords);
-		return sendRequest;
+//		String removeStopWords = stemmer.removeStopWords(requestedText);
+//		MyRequest sendRequest = sendRequest(removeStopWords);
+		return null;
+	}
+	
+	public MyRequest analiseAndSendRequestTemp(String requestedText) {
+		List<String> allPossibleOptions = service.getAllPossibleOptions(requestedText);
+		MyRequest request = new MyRequest();
+		request.setAllPossibleQuery(allPossibleOptions);
+		return null;
 	}
 }

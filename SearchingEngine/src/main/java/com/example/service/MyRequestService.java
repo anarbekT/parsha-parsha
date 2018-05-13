@@ -13,5 +13,7 @@ public interface MyRequestService {
 	boolean delete(MyRequest entity);
 
 	List<MyRequest> findAll();
+	
+	List<String> getAllPossibleOptions(String mainRequest);
 
 }
