@@ -3,6 +3,7 @@ package com.example.service;
 import java.util.List;
 
 import com.example.entities.MyRequest;
+import com.example.entities.QueryWord;
 
 public interface MyRequestService {
 
@@ -14,6 +15,6 @@ public interface MyRequestService {
 
 	List<MyRequest> findAll();
 	
-	List<String> getAllPossibleOptions(String mainRequest);
+	List<QueryWord> getAllPossibleOptions(String mainRequest);
 
 }

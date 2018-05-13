@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dao.MyRequestDao;
 import com.example.entities.MyRequest;
+import com.example.entities.QueryWord;
 import com.example.parser.Stemmer;
 import com.example.service.MyRequestService;
 
@@ -43,12 +44,14 @@ public class MyRequestServiceImpl implements MyRequestService {
 	}
 
 	@Override
-	public List<String> getAllPossibleOptions(String mainRequest) {
+	public List<QueryWord> getAllPossibleOptions(String mainRequest) {
 		mainRequest = stemmer.removeStopWords(mainRequest);
-		List<String> wordsArray = stemmer.getWordsArray(mainRequest);
-		List<String> generateAllPossibleVariants = stemmer.generateAllPossibleVariants(wordsArray);
+		List<QueryWord> wordsArray = stemmer.getWordsArray(mainRequest);
+		List<QueryWord> wordsWithOutSuffixes = stemmer.getWordsArray(mainRequest);
+		List<QueryWord> generateAllPossibleVariants = stemmer.generateAllPossibleVariants(wordsArray);
+		
 		return generateAllPossibleVariants;
-	} 
+	}
 	
 
 }

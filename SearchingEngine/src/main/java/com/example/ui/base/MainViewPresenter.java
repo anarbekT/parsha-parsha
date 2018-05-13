@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.entities.MyRequest;
+import com.example.entities.QueryWord;
 import com.example.service.MyRequestService;
 import com.example.webservice.WebScrap;
 
@@ -16,7 +17,7 @@ public class MainViewPresenter extends AbstractBasePresenter{
     private WebScrap webService = new WebScrap();
     
     public MainViewPresenter() {
-        super();         
+        super();
         System.out.println(service.toString());
     }
     
@@ -47,9 +48,9 @@ public class MainViewPresenter extends AbstractBasePresenter{
 	}
 	
 	public MyRequest analiseAndSendRequestTemp(String requestedText) {
-		List<String> allPossibleOptions = service.getAllPossibleOptions(requestedText);
+		List<QueryWord> allPossibleOptions = service.getAllPossibleOptions(requestedText);
 		MyRequest request = new MyRequest();
 		request.setAllPossibleQuery(allPossibleOptions);
-		return null;
+		return request;
 	}
 }

@@ -2,11 +2,15 @@ package com.example.parser;
 
 import java.util.List;
 
+import com.example.entities.QueryWord;
+
 public interface Stemmer {
 	
 	String removeStopWords(String text);
 	
-	List<String> getWordsArray(String text);
+	List<QueryWord> getWordsArray(String text);
 	
-	List<String> generateAllPossibleVariants(List<String> words);
+	List<QueryWord> removeSuffixes(List<QueryWord>	words);
+	
+	List<QueryWord> generateAllPossibleVariants(List<QueryWord> words);
 }

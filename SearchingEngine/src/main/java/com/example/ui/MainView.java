@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.entities.MyRequest;
+import com.example.entities.QueryWord;
 import com.example.ui.base.MainViewPresenter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
@@ -25,8 +26,9 @@ public class MainView extends VerticalLayout implements View {
 	private TextField textSearch;
 
 	private Grid<MyRequest> leftGrid;
-	private Grid<MyRequest> rightGrid;
-	List<MyRequest> lemmatizedRequests;
+	private Grid<QueryWord> rightGrid;
+//	List<MyRequest> lemmatizedRequests;
+	List<QueryWord> lemmatizedRequests;
 	List<MyRequest> nonLemmatizedRequests;
 
 	private MainViewPresenter presenter;
@@ -38,7 +40,7 @@ public class MainView extends VerticalLayout implements View {
 	}
 
 	private void bindEvent() {
-		btnSearch.addClickListener(event -> doSearch());		
+		btnSearch.addClickListener(event -> doSearch());
 	}
 
 	private void init() {
@@ -58,8 +60,9 @@ public class MainView extends VerticalLayout implements View {
 		// Create a grid for Processed Text
 		rightGrid = new Grid<>("Lemmatized");
 		rightGrid.setItems(lemmatizedRequests);
-		rightGrid.addColumn(MyRequest::getRequest).setCaption("Request");
-		rightGrid.addColumn(MyRequest::getNumberOfResult).setCaption("Number Of Result");
+		rightGrid.addColumn(QueryWord::getWord).setCaption("Query");
+//		rightGrid.addColumn(MyRequest::getRequest).setCaption("Request");
+//		rightGrid.addColumn(MyRequest::getNumberOfResult).setCaption("Number Of Result");
 	}
 
 	public void generateUI() {
@@ -99,18 +102,17 @@ public class MainView extends VerticalLayout implements View {
 
 	private void doSearch() {
 		String requestedText = textSearch.getValue().trim();
-		MyRequest request = presenter.sendRequest(requestedText);
-		nonLemmatizedRequests.add(request);
 		
-		request = presenter.analiseAndSendRequest(requestedText);
-		lemmatizedRequests.add(request);
-		
-		updateGridList();
+//		MyRequest request = presenter.sendRequest(requestedText);
+//		nonLemmatizedRequests.add(request);
+
+		MyRequest request = presenter.analiseAndSendRequestTemp(requestedText);
+		rightGrid.setItems(request.getAllPossibleQuery());
+
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-
 	}
 
 	public void updateGridList() {
