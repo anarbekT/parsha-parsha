@@ -76,7 +76,18 @@ public class StemmerImpl implements Stemmer {
 
 	@Override
 	public List<QueryWord> removeSuffixes(List<QueryWord> words) {
-		
+		List<QueryWord> withoutSuffixesWords = new ArrayList<>();
+		StopWords stopWords = new StopWords();
+
+		for (QueryWord query : words) {
+			QueryWord tempQuery = new QueryWord();
+			String word = query.getWord();
+			String withoutSuffixes = stopWords.removeZhiktikZhalgau(word);
+			tempQuery.setWord(withoutSuffixes);
+
+			withoutSuffixesWords.add(tempQuery);
+		}
+		return withoutSuffixesWords;
 	}
 
 }

@@ -47,8 +47,8 @@ public class MyRequestServiceImpl implements MyRequestService {
 	public List<QueryWord> getAllPossibleOptions(String mainRequest) {
 		mainRequest = stemmer.removeStopWords(mainRequest);
 		List<QueryWord> wordsArray = stemmer.getWordsArray(mainRequest);
-		List<QueryWord> wordsWithOutSuffixes = stemmer.getWordsArray(mainRequest);
-		List<QueryWord> generateAllPossibleVariants = stemmer.generateAllPossibleVariants(wordsArray);
+		List<QueryWord> wordsWithOutSuffixes = stemmer.removeSuffixes(wordsArray);
+		List<QueryWord> generateAllPossibleVariants = stemmer.generateAllPossibleVariants(wordsWithOutSuffixes);
 		
 		return generateAllPossibleVariants;
 	}
