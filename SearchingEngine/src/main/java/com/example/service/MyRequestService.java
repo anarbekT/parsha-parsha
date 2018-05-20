@@ -15,6 +15,6 @@ public interface MyRequestService {
 
 	List<MyRequest> findAll();
 	
-	List<QueryWord> getAllPossibleOptions(String mainRequest);
+	List<QueryWord> getAllPossibleQuery(String mainRequest);
 
 }

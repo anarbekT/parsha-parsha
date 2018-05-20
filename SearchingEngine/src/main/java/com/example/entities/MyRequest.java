@@ -32,7 +32,4 @@ public class MyRequest implements Serializable {
 	
 	@OneToMany(mappedBy = "myRequest")
 	private List<QueryWord> allPossibleQuery;
-
-
-	
 }

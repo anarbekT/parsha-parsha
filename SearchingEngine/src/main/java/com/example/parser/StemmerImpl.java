@@ -22,6 +22,7 @@ public class StemmerImpl implements Stemmer {
 		return withOutStopWords;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public List<QueryWord> getWordsArray(String text) {
 		List<QueryWord> words = new ArrayList<>();
@@ -82,7 +83,11 @@ public class StemmerImpl implements Stemmer {
 		for (QueryWord query : words) {
 			QueryWord tempQuery = new QueryWord();
 			String word = query.getWord();
-			String withoutSuffixes = stopWords.removeZhiktikZhalgau(word);
+			String withoutSuffixes = stopWords.removeSeptikZhalgau(word);
+			withoutSuffixes = stopWords.removeTaueldikZhalgau(withoutSuffixes);
+			withoutSuffixes = stopWords.removeZhiktikZhalgau(withoutSuffixes);
+			withoutSuffixes = stopWords.removeKoptikZhalgau(withoutSuffixes);
+
 			tempQuery.setWord(withoutSuffixes);
 
 			withoutSuffixesWords.add(tempQuery);

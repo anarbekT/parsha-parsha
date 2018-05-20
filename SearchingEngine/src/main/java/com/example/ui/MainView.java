@@ -15,6 +15,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -24,8 +25,10 @@ public class MainView extends VerticalLayout implements View {
 
 	private Button btnSearch;
 	private TextField textSearch;
+	
+	private Panel resultArea;
 
-	private Grid<MyRequest> leftGrid;
+	private Grid<MyRequest> resultGrid;
 	private Grid<QueryWord> rightGrid;
 //	List<MyRequest> lemmatizedRequests;
 	List<QueryWord> lemmatizedRequests;
@@ -52,10 +55,10 @@ public class MainView extends VerticalLayout implements View {
 
 	private void initGrids() {
 		// Create a grid for not Processed Text
-		leftGrid = new Grid<>("Non-lemmatized");
-		leftGrid.setItems(nonLemmatizedRequests);
-		leftGrid.addColumn(MyRequest::getRequest).setCaption("Request");
-		leftGrid.addColumn(MyRequest::getNumberOfResult).setCaption("Number Of Result");
+//		resultGrid = new Grid<>("Non-lemmatized");
+//		resultGrid.setItems(nonLemmatizedRequests);
+//		resultGrid.addColumn(MyRequest::getRequest).setCaption("Request");
+//		resultGrid.addColumn(MyRequest::getNumberOfResult).setCaption("Number Of Result");
 
 		// Create a grid for Processed Text
 		rightGrid = new Grid<>("Lemmatized");
@@ -83,18 +86,32 @@ public class MainView extends VerticalLayout implements View {
 
 		textSearch.focus();
 		btnSearch.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
+		
+//		resultArea = new Panel("Result: 11");
+//		
+//		VerticalLayout verLayout = new VerticalLayout();
+//		verLayout.setWidth("500px");
+//		verLayout.setSpacing(true);
+//		verLayout.addComponent(new Label("Demo1", ContentMode.HTML));
+//		Label l = new Label("<hr>", ContentMode.HTML);
+//		l.setSizeFull();
+//		verLayout.addComponentsAndExpand(l);
+//		verLayout.addComponent(new Label("Demo2", ContentMode.HTML));
+//
+//		resultArea.setContent(verLayout);
+		
 		horLayout.addComponentsAndExpand(textSearch);
 		horLayout.addComponent(btnSearch);
 		horLayout.setComponentAlignment(btnSearch, Alignment.BOTTOM_RIGHT);
 
 		addComponent(horLayout);
-
-		GridLayout gridLayout = new GridLayout(2, 1);
+//		addComponent(resultArea);
+		
+		GridLayout gridLayout = new GridLayout();
 		gridLayout.setSpacing(true);
 
-		gridLayout.addComponent(leftGrid, 0, 0);
-		gridLayout.addComponent(rightGrid, 1, 0);
+//		gridLayout.addComponent(leftGrid, 0, 0);
+		gridLayout.addComponent(rightGrid);
 
 		addComponent(gridLayout);
 
@@ -103,20 +120,19 @@ public class MainView extends VerticalLayout implements View {
 	private void doSearch() {
 		String requestedText = textSearch.getValue().trim();
 		
-//		MyRequest request = presenter.sendRequest(requestedText);
-//		nonLemmatizedRequests.add(request);
-
+		
 		MyRequest request = presenter.analiseAndSendRequestTemp(requestedText);
 		rightGrid.setItems(request.getAllPossibleQuery());
 
 	}
+
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 	}
 
 	public void updateGridList() {
-		leftGrid.setItems(nonLemmatizedRequests);
+		resultGrid.setItems(nonLemmatizedRequests);
 		rightGrid.setItems(lemmatizedRequests);
 	}
 
