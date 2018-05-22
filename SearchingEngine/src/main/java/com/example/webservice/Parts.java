@@ -28,7 +28,7 @@ public class Parts {
         
         
         //Web service ты тексеруге query жіберілді
-        WebService webService = new WebService(query);
+        WebService2 webService = new WebService2(query);
         //log(">>> Web service result/Json \n"+webService.result());
         log(webService.result());
         }

@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.entities.WebPage;
 
 public interface WebPageService {
+	
+	WebPage getById(Long id);
 
 	WebPage save(WebPage entity);
 
@@ -14,6 +16,11 @@ public interface WebPageService {
 
 	List<WebPage> findAll();
 	
-	List<WebPage> getWepPagesByUrl(String url);
+	List<WebPage> getWebPagesByUrl(String url);
 	
+	List<WebPage> findWebPagesByUrl(String url);
+	
+	List<WebPage> findWebPagesByUrlAndKeyword(String url, String keyword);
+
+	boolean isUrlExist(String url);
 }

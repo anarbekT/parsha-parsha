@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.example.webservice.PageInfo;
 
 import lombok.Data;
 
@@ -24,12 +27,18 @@ public class MyRequest implements Serializable {
 	@Column(name = "REQUEST_ID")
 	private Long id;
 
-	@Column(name = "REQUEST_NAME", length = 200)
-	private String request;
-	
 	@Column(name = "NUMBER_OF_RESULT", length = 200)
 	private int numberOfResult;
 	
+
+	@Column(name = "REQUEST_NAME", length = 200)
+	private String request;
+	 	
+	
 	@OneToMany(mappedBy = "myRequest")
 	private List<QueryWord> allPossibleQuery;
+	
+//	@OneToMany(mappedBy = "myRequest")
+	@Transient
+	private List<WebPage> listOfResults;
 }

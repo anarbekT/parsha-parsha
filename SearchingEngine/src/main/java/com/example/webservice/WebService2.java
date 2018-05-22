@@ -3,12 +3,12 @@ package com.example.webservice;
 //Жасыл бірақ бәрін көрсетет
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-public class WebService {
+public class WebService2 {
     private String responseJson;
-    public WebService(String query){
+    public WebService2(String query){
         long startTime2 = System.currentTimeMillis();
         //іздейтін класқа сұрақ жіберілді
-        Searching searching = new Searching(query);
+        Searching searching = new Searching();
         //Тапқан нәтижені реттеуге жібердік
         Ordering ordering = new Ordering(searching);
         //Реттелген нәтижені ArrayList түрінде алып Json форматқа ауыстырдық 
@@ -25,7 +25,6 @@ public class WebService {
         if(responseJson == null){
             return "Not responding!";
         }else return responseJson;
-        
     }
     
     private static void log(String string){

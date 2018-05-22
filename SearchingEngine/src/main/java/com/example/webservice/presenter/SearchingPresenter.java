@@ -1,6 +1,7 @@
 package com.example.webservice.presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,41 +11,42 @@ import com.example.ui.base.AbstractBasePresenter;
 import com.example.webservice.PageInfo;
 import com.example.webservice.ScrapFromWeb;
 
-public class SearchingPresenter extends AbstractBasePresenter{
-	
-    @Autowired
-    private WebPageService webService;
-	
-	public SearchingPresenter(){
+public class SearchingPresenter extends AbstractBasePresenter {
+
+	@Autowired
+	private WebPageService webService;
+
+	public SearchingPresenter() {
 		super();
 	}
-	
-	
-	public void saveWebPagesList(ArrayList<WebPage> dbList){
-		for(WebPage page:dbList){
+
+	public void saveWebPagesList(WebPage page) {
 			webService.save(page);
-		}
 	}
-	
-	  public ArrayList<PageInfo> getDB(String specialUrl){
-		  ArrayList<PageInfo> pageInfo = new ArrayList<>();
-		  
-	        if(specialUrl!=null){
-	            for (WebPage currentDb: ScrapFromWeb.dbList) {
-	                if(currentDb.getWebUrl().contains(specialUrl)){
-	                    pageInfo.add(new PageInfo(currentDb.getWebUrl(), currentDb.getWebTitle(), currentDb.getWebParagraph()));
-	                }
-	            }
-	            if(pageInfo.isEmpty()){
-	                ScrapFromWeb scrapper = new ScrapFromWeb(specialUrl);
-	                getDB(specialUrl);
-	            }
-	        }else{
-	        for (WebPage currentDb: ScrapFromWeb.dbList) {
-	                pageInfo.add(new PageInfo(currentDb.getWebUrl(), currentDb.getWebTitle(), currentDb.getWebParagraph()));
-	            }
-	        }
-	    }
-	
+
+	public ArrayList<PageInfo> getDB(String specialUrl) {
+		ArrayList<PageInfo> pageInfo = new ArrayList<>();
+
+		if (specialUrl != null) {
+			List<WebPage> webPagesByUrl = webService.getWebPagesByUrl(specialUrl);
+			if (!webPagesByUrl.isEmpty() || webPagesByUrl != null) {
+				for (WebPage page : webPagesByUrl) {
+					pageInfo.add(new PageInfo(page.getWebUrl(), page.getWebTitle(), page.getWebParagraph()));
+				}
+			}
+			if (pageInfo.isEmpty()) {
+				ScrapFromWeb scrapper = new ScrapFromWeb(specialUrl);
+				getDB(specialUrl);
+			}
+		} else {
+			List<WebPage> webPagesByUrl = webService.findAll();
+			if (!webPagesByUrl.isEmpty() || webPagesByUrl != null) {
+				for (WebPage page : webPagesByUrl) {
+					pageInfo.add(new PageInfo(page.getWebUrl(), page.getWebTitle(), page.getWebParagraph()));
+				}
+			}
+		}
+		return pageInfo;
+	}
 
 }

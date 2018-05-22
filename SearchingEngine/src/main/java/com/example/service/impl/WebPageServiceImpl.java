@@ -1,6 +1,5 @@
 package com.example.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,21 +10,19 @@ import org.springframework.stereotype.Service;
 import com.example.dao.WebPageDao;
 import com.example.entities.WebPage;
 import com.example.service.WebPageService;
-import com.example.webservice.PageInfo;
 
 @Service
 @Transactional
-public class WebPageServiceImpl implements WebPageService{
+public class WebPageServiceImpl implements WebPageService {
 
 	@Autowired
 	private WebPageDao dao;
-	
+
 	@Override
 	public WebPage save(WebPage entity) {
-		if(entity==null){
-			return null;
-		}
-			return dao.save(entity);
+		WebPage page = dao.save(entity);
+		dao.sessionFlush();
+		return page;
 	}
 
 	@Override
@@ -44,10 +41,35 @@ public class WebPageServiceImpl implements WebPageService{
 	}
 
 	@Override
-	public List<WebPage> getWepPagesByUrl(String url) {
-		ArrayList<WebPage> pageInfo = new ArrayList<>();
-		dao.getWebPagesByUrl(url);
-		return null;
+	public List<WebPage> getWebPagesByUrl(String url) {
+		List<WebPage> webPagesByUrl = dao.getWebPagesByUrl(url);
+		return webPagesByUrl;
+	}
+
+	@Override
+	public WebPage getById(Long id) {
+		return dao.get(id);
+	}
+
+	@Override
+	public List<WebPage> findWebPagesByUrl(String url) {
+		List<WebPage> webPagesByUrl = dao.findByUrl(url);
+		return webPagesByUrl;
+	}
+
+	@Override
+	public List<WebPage> findWebPagesByUrlAndKeyword(String url, String keyword) {
+		List<WebPage> webPages = dao.findByUrlAndKeyword(url, keyword);
+		return webPages;
+	}
+
+	@Override
+	public boolean isUrlExist(String url) {
+		List<WebPage> webPagesByUrl = dao.findByUrl(url);
+		if (webPagesByUrl.isEmpty()) {
+			return false;
+		}
+		return true;
 	}
 
 }
