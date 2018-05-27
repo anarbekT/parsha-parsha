@@ -1,4 +1,4 @@
-package com.example.webservice;
+package web.app.webservice;
 
 //Жасыл бірақ бәрін көрсетет
 import com.google.gson.Gson;

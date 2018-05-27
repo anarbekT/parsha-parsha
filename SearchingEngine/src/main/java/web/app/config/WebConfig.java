@@ -1,4 +1,4 @@
-package com.example.config;
+package web.app.config;
 
 import java.util.Properties;
 
@@ -15,63 +15,59 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.example.ui.base.MvpInjector;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-@Configuration
-@EnableTransactionManagement 
-public class DemoConfig {
-    
-    @Autowired
-    private Environment environment;
-    
-    @Autowired
-    private ApplicationContext context;
-    
-    @PostConstruct
-    public void init(){
-        MvpInjector.context = context; 
-    }
-    
-    
-    
-    @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource(environment));
-        sessionFactory.setPackagesToScan(new String[] { "com.example.entities" });
-        sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
-    }
-    
-    private Properties hibernateProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
-        properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
-        properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
-        return properties;
-    }
-    
-    
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory s) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(s);
-        return txManager;
-    }
- 
-    
-    @Bean
-    public DataSource dataSource(Environment environment) {
-        HikariConfig dataSourceConfig = new HikariConfig();
-        dataSourceConfig.setDriverClassName(environment.getRequiredProperty("db.driver"));
-        dataSourceConfig.setJdbcUrl(environment.getRequiredProperty("db.url"));
-        dataSourceConfig.setUsername(environment.getRequiredProperty("db.username"));
-        dataSourceConfig.setPassword(environment.getRequiredProperty("db.password"));
-        return new HikariDataSource(dataSourceConfig);
-    }
-}
+import web.app.ui.base.MvpInjector;
 
+@Configuration
+@EnableTransactionManagement
+public class WebConfig {
+
+	@Autowired
+	private Environment environment;
+
+	@Autowired
+	private ApplicationContext context;
+
+	@PostConstruct
+	public void init() {
+		MvpInjector.context = context;
+	}
+
+	@Bean
+	public LocalSessionFactoryBean sessionFactory() {
+		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+		sessionFactory.setDataSource(dataSource(environment));
+		sessionFactory.setPackagesToScan(new String[] { "web.app.entities" });
+		sessionFactory.setHibernateProperties(hibernateProperties());
+		return sessionFactory;
+	}
+
+	private Properties hibernateProperties() {
+		Properties properties = new Properties();
+		properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+		properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
+		properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+		properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+		return properties;
+	}
+
+	@Bean
+	@Autowired
+	public HibernateTransactionManager transactionManager(SessionFactory s) {
+		HibernateTransactionManager txManager = new HibernateTransactionManager();
+		txManager.setSessionFactory(s);
+		return txManager;
+	}
+
+	@Bean
+	public DataSource dataSource(Environment environment) {
+		HikariConfig dataSourceConfig = new HikariConfig();
+		dataSourceConfig.setDriverClassName(environment.getRequiredProperty("db.driver"));
+		dataSourceConfig.setJdbcUrl(environment.getRequiredProperty("db.url"));
+		dataSourceConfig.setUsername(environment.getRequiredProperty("db.username"));
+		dataSourceConfig.setPassword(environment.getRequiredProperty("db.password"));
+		return new HikariDataSource(dataSourceConfig);
+	}
+}

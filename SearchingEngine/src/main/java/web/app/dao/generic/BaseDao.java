@@ -1,4 +1,4 @@
-package com.example.dao.generic;
+package web.app.dao.generic;
 
 import java.io.Serializable;
 import java.util.List;

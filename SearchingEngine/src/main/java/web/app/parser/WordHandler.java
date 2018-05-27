@@ -1,4 +1,4 @@
-package com.example.parser;
+package web.app.parser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StopWords {
+public class WordHandler {
 
 	private static final String BASE_DIR = "src\\main\\resources\\";
 
@@ -23,7 +23,7 @@ public class StopWords {
 	private static List<String> taueldikZhalgauList;
 	private static final String TAUELDIK_ZHALGAU_FILE = "taueldik_zhalgaular.txt";
 
-	public StopWords() {
+	public WordHandler() {
 		stopWordsList = initStopWordsListArray(STOP_WORDS_FILE);
 		koptikZhalgauList = initStopWordsListArray(KOPTIK_ZHALGAU_FILE);
 		zhiktikZhalgauList = initStopWordsListArray(ZHIKTIK_ZHALGAU_FILE);
@@ -68,7 +68,10 @@ public class StopWords {
 	public String removeKoptikZhalgau(String text) {
 		for (String koptikZalgau : koptikZhalgauList) {
 			String regex = koptikZalgau + "$";
-			text = text.replaceAll(regex, "");
+			if (text.endsWith(koptikZalgau)) {
+				text = text.replaceAll(regex, "");
+				break;
+			}
 		}
 		return text;
 	}
@@ -76,29 +79,43 @@ public class StopWords {
 	public String removeZhiktikZhalgau(String text) {
 		for (String zhiktikZalgau : zhiktikZhalgauList) {
 			String regex = zhiktikZalgau + "$";
-			text = text.replaceAll(regex, "");
+			if (text.endsWith(zhiktikZalgau)) {
+				text = text.replaceAll(regex, "");
+				break;
+			}
+
 		}
 		return text;
 	}
 
 	public String removeTaueldikZhalgau(String text) {
 		// boolean isTaueldikExist = false;
+		String temp="";
 		for (String taueldikZalgau : taueldikZhalgauList) {
 			String regex = taueldikZalgau + "$";
-			text = text.replaceAll(regex, "");
+			if (text.endsWith(taueldikZalgau)) {
+				temp = text.replaceAll(regex, "");
+				break;
+			}
 		}
-		return text;
+		if(temp.length()<=3){
+			return text;
+		}
+		return temp;
 	}
 
 	public String removeSeptikZhalgau(String text) {
-//		if (text.length() <= 4) {
-//			if(isEndsWithVowel(text)){
-//				return text;
-//			}
-//		}
+		// if (text.length() <= 4) {
+		// if(isEndsWithVowel(text)){
+		// return text;
+		// }
+		// }
 		for (String septikZalgau : septikZhalgauList) {
 			String regex = septikZalgau + "$";
-			text = text.replaceAll(regex, "");
+			if (text.endsWith(septikZalgau)) {
+				text = text.replaceAll(regex, "");
+				break;
+			}
 		}
 		return text;
 	}

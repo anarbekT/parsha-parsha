@@ -1,4 +1,4 @@
-package com.example.service.impl;
+package web.app.service.impl;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dao.WebPageDao;
-import com.example.entities.WebPage;
-import com.example.service.WebPageService;
+import web.app.dao.WebPageDao;
+import web.app.entities.WebPage;
+import web.app.service.WebPageService;
 
 @Service
 @Transactional
@@ -65,6 +65,7 @@ public class WebPageServiceImpl implements WebPageService {
 
 	@Override
 	public boolean isUrlExist(String url) {
+		
 		List<WebPage> webPagesByUrl = dao.findByUrl(url);
 		if (webPagesByUrl.isEmpty()) {
 			return false;

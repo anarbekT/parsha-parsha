@@ -1,6 +1,5 @@
-package com.example.service.impl;
+package web.app.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,12 +7,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.entities.WebPage;
-import com.example.service.WebPageService;
-import com.example.service.WebService;
-import com.example.webservice.PageInfo;
-import com.example.webservice.ScrapFromWeb;
-import com.example.webservice.Searching;
+import web.app.entities.WebPage;
+import web.app.service.WebPageService;
+import web.app.service.WebService;
+import web.app.webservice.ScrapFromWeb;
 
 @Service
 @Transactional

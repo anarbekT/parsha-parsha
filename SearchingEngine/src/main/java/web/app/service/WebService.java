@@ -1,8 +1,8 @@
-package com.example.service;
+package web.app.service;
 
 import java.util.List;
 
-import com.example.entities.WebPage;
+import web.app.entities.WebPage;
 
 public interface WebService {
 	

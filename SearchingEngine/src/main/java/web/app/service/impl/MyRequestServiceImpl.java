@@ -1,4 +1,4 @@
-package com.example.service.impl;
+package web.app.service.impl;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dao.MyRequestDao;
-import com.example.entities.MyRequest;
-import com.example.entities.QueryWord;
-import com.example.parser.Stemmer;
-import com.example.service.MyRequestService;
+import web.app.dao.MyRequestDao;
+import web.app.entities.MyRequest;
+import web.app.entities.QueryWord;
+import web.app.parser.Stemmer;
+import web.app.service.MyRequestService;
 
 @Service
 @Transactional

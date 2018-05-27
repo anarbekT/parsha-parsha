@@ -1,4 +1,4 @@
-package com.example.webservice;
+package web.app.webservice;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.entities.WebPage;
-import com.example.service.WebPageService;
-import com.example.webservice.presenter.SearchingPresenter;
+import web.app.entities.WebPage;
+import web.app.service.WebPageService;
+import web.app.webservice.presenter.SearchingPresenter;
 
 public class ScrapFromWeb {
 

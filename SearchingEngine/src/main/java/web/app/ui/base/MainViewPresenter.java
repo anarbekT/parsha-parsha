@@ -1,17 +1,17 @@
-package com.example.ui.base;
+package web.app.ui.base;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.entities.MyRequest;
-import com.example.entities.QueryWord;
-import com.example.entities.WebPage;
-import com.example.service.MyRequestService;
-import com.example.service.WebPageService;
-import com.example.service.WebService;
-import com.example.webservice.PageInfo;
+import web.app.entities.MyRequest;
+import web.app.entities.QueryWord;
+import web.app.entities.WebPage;
+import web.app.service.MyRequestService;
+import web.app.service.WebPageService;
+import web.app.service.WebService;
+import web.app.webservice.PageInfo;
 
 public class MainViewPresenter extends AbstractBasePresenter {
 
@@ -38,8 +38,8 @@ public class MainViewPresenter extends AbstractBasePresenter {
 		List<QueryWord> allPossibleQuery = requestService.getAllPossibleQuery(requestedText);
 		request.setAllPossibleQuery(allPossibleQuery);
 		
-		List<WebPage> listOfWebPages = webService.sendRequest(requestedText);
-		request.setListOfResults(listOfWebPages);
+//		List<WebPage> listOfWebPages = webService.sendRequest(requestedText);
+//		request.setListOfResults(listOfWebPages);
 		
 		return request;
 	}

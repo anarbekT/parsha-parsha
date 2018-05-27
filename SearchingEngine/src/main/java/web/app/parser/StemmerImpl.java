@@ -1,4 +1,4 @@
-package com.example.parser;
+package web.app.parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.example.entities.QueryWord;
+import web.app.entities.QueryWord;
 
 @Service
 @Transactional
@@ -16,7 +16,7 @@ public class StemmerImpl implements Stemmer {
 
 	@Override
 	public String removeStopWords(String text) {
-		StopWords stopWords = new StopWords();
+		WordHandler stopWords = new WordHandler();
 
 		String withOutStopWords = stopWords.removeStopWords(text);
 		return withOutStopWords;
@@ -29,6 +29,7 @@ public class StemmerImpl implements Stemmer {
 		Scanner scan = new Scanner(text);
 		while (scan.hasNext()) {
 			String word = scan.next();
+			word = word.replaceAll("[^a-zA-Z0-9]", ""); 
 			QueryWord query = new QueryWord();
 			query.setWord(word);
 			words.add(query);
@@ -78,15 +79,16 @@ public class StemmerImpl implements Stemmer {
 	@Override
 	public List<QueryWord> removeSuffixes(List<QueryWord> words) {
 		List<QueryWord> withoutSuffixesWords = new ArrayList<>();
-		StopWords stopWords = new StopWords();
+		WordHandler wordHandler = new WordHandler();
 
 		for (QueryWord query : words) {
 			QueryWord tempQuery = new QueryWord();
 			String word = query.getWord();
-			String withoutSuffixes = stopWords.removeSeptikZhalgau(word);
-			withoutSuffixes = stopWords.removeTaueldikZhalgau(withoutSuffixes);
-			withoutSuffixes = stopWords.removeZhiktikZhalgau(withoutSuffixes);
-			withoutSuffixes = stopWords.removeKoptikZhalgau(withoutSuffixes);
+			String withoutSuffixes = wordHandler.removeZhiktikZhalgau(word);
+			withoutSuffixes = wordHandler.removeSeptikZhalgau(withoutSuffixes);
+			// тауелдікті алып тастағаннан кейін сөз 3 тен аз болса онда кайтадан орнына келтіреміз
+			withoutSuffixes = wordHandler.removeTaueldikZhalgau(withoutSuffixes);
+			withoutSuffixes = wordHandler.removeKoptikZhalgau(withoutSuffixes);
 
 			tempQuery.setWord(withoutSuffixes);
 

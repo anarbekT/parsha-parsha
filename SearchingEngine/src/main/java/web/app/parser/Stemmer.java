@@ -1,8 +1,8 @@
-package com.example.parser;
+package web.app.parser;
 
 import java.util.List;
 
-import com.example.entities.QueryWord;
+import web.app.entities.QueryWord;
 
 public interface Stemmer {
 

@@ -1,9 +1,9 @@
-package com.example.dao;
+package web.app.dao;
 
 import java.util.List;
 
-import com.example.dao.generic.BaseDao;
-import com.example.entities.WebPage;
+import web.app.dao.generic.BaseDao;
+import web.app.entities.WebPage;
 
 public interface WebPageDao extends BaseDao<WebPage, Long>{
 

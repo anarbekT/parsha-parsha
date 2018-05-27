@@ -1,15 +1,15 @@
-package com.example.webservice.presenter;
+package web.app.webservice.presenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.entities.WebPage;
-import com.example.service.WebPageService;
-import com.example.ui.base.AbstractBasePresenter;
-import com.example.webservice.PageInfo;
-import com.example.webservice.ScrapFromWeb;
+import web.app.entities.WebPage;
+import web.app.service.WebPageService;
+import web.app.ui.base.AbstractBasePresenter;
+import web.app.webservice.PageInfo;
+import web.app.webservice.ScrapFromWeb;
 
 public class SearchingPresenter extends AbstractBasePresenter {
 

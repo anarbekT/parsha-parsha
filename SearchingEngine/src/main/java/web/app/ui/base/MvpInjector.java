@@ -1,4 +1,4 @@
-package com.example.ui.base;
+package web.app.ui.base;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;

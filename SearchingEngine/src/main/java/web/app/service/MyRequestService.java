@@ -1,9 +1,9 @@
-package com.example.service;
+package web.app.service;
 
 import java.util.List;
 
-import com.example.entities.MyRequest;
-import com.example.entities.QueryWord;
+import web.app.entities.MyRequest;
+import web.app.entities.QueryWord;
 
 public interface MyRequestService {
 

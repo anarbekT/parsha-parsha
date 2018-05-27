@@ -1,4 +1,4 @@
-package com.example.entities;
+package web.app.entities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,9 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.example.webservice.PageInfo;
-
 import lombok.Data;
+import web.app.webservice.PageInfo;
 
 @Data
 @Entity
@@ -41,4 +40,6 @@ public class MyRequest implements Serializable {
 //	@OneToMany(mappedBy = "myRequest")
 	@Transient
 	private List<WebPage> listOfResults;
+	
+	
 }

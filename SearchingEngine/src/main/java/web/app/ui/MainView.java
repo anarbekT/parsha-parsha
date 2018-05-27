@@ -1,12 +1,8 @@
-package com.example.ui;
+package web.app.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.entities.MyRequest;
-import com.example.entities.QueryWord;
-import com.example.entities.WebPage;
-import com.example.ui.base.MainViewPresenter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -20,9 +16,15 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+
+import web.app.entities.MyRequest;
+import web.app.entities.QueryWord;
+import web.app.entities.WebPage;
+import web.app.ui.base.MainViewPresenter;
 
 public class MainView extends VerticalLayout implements View {
 	static final long serialVersionUID = 1L;
@@ -58,14 +60,14 @@ public class MainView extends VerticalLayout implements View {
 
 	private void initGrids() {
 		// Create a grid for not Processed Text
-		resultGrid = new Grid<>("Results");
-		resultGrid.addColumn(WebPage::getWebUrl).setCaption("URL");
-		resultGrid.addColumn(WebPage::getWebTitle).setCaption("TITLE");
+//		resultGrid = new Grid<>("Results");
+//		resultGrid.addColumn(WebPage::getWebUrl).setCaption("URL");
+//		resultGrid.addColumn(WebPage::getWebTitle).setCaption("TITLE");
 
 		// Create a grid for Processed Text
-		// rightGrid = new Grid<>("Lemmatized");
-		// rightGrid.setItems(lemmatizedRequests);
-		// rightGrid.addColumn(QueryWord::getWord).setCaption("Query");
+		 rightGrid = new Grid<>("Lemmatized");
+		 rightGrid.setItems(lemmatizedRequests);
+		 rightGrid.addColumn(QueryWord::getWord).setCaption("Query");
 	}
 
 	public void generateUI() {
@@ -107,14 +109,16 @@ public class MainView extends VerticalLayout implements View {
 		horLayout2.addComponent(linkOfYandex);
 
 		addComponent(horLayout2);
-//
-//		GridLayout gridLayout = new GridLayout();
-//		gridLayout.setSpacing(true);
-//
-//		gridLayout.addComponent(resultGrid);
-//		// gridLayout.addComponent(rightGrid, 1, 0);
-//
-//		addComponent(gridLayout);
+		
+
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.setSpacing(true);
+
+//		gridLayout.addComponent(leftGrid, 0, 0);
+		gridLayout.addComponent(rightGrid);
+
+		addComponent(gridLayout);
+
 		
 		verLayout = new VerticalLayout();
 		verLayout.setSpacing(true);
@@ -130,12 +134,24 @@ public class MainView extends VerticalLayout implements View {
 
 		// presenter.testMethod();
 		MyRequest request = presenter.analiseAndSendRequestTemp(requestedText);
-		// rightGrid.setItems(request.getAllPossibleQuery());
-		showResultList(request.getListOfResults());
+		 rightGrid.setItems(request.getAllPossibleQuery());
+		 doTextTemp(request.getAllPossibleQuery());
+//		showResultList(request.getListOfResults());
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+	}
+	
+	public void doTextTemp(List<QueryWord> lemmatizedRequests){
+		String text="";
+		for(QueryWord word: lemmatizedRequests){
+			text+=word.getWord()+" ";
+		}
+		TextField textField = new TextField();
+		textField.setSizeFull();	
+		textField.setValue(text);
+		addComponent(textField);
 	}
 
 	public void updateGridList() {
@@ -146,12 +162,19 @@ public class MainView extends VerticalLayout implements View {
 	private void showResultList(List<WebPage> listOfResults) {
 		
 		for (WebPage page : listOfResults) {
-			String text = "<h3>"+page.getWebTitle()+"</h3>";
+			Panel p = new Panel("<h3>"+page.getWebTitle()+"</h3>");
+			HorizontalLayout horL = new HorizontalLayout();
+			horL.setSpacing(true);
+			horL.setSizeUndefined();
+
+			String text = ""; //"<h3>"+page.getWebTitle()+"</h3>";
 			text+="<a href=\""+page.getWebUrl()+"\" target=\"_blank\">"+page.getWebUrl()+"</a>"; //<a href="https://www.w3schools.com">Visit W3Schools.com!</a>
-			text+="<p>"+page.getWebParagraph()+"</p>";
+			text+="<p>"+page.getWebParagraph().substring(0, 100)+"</p>";
 			Label label = new Label(text, ContentMode.HTML);
-			label.setWidth("100px");
-			verLayout.addComponent(label);
+			label.setSizeFull();
+			horL.addComponent(label);
+			p.setContent(horL);
+			verLayout.addComponent(p);
 		}
 		
 	}

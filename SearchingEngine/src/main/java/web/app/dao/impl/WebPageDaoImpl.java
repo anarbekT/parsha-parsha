@@ -1,4 +1,4 @@
-package com.example.dao.impl;
+package web.app.dao.impl;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.example.dao.WebPageDao;
-import com.example.dao.generic.AbstractBaseDao;
-import com.example.entities.WebPage;
+import web.app.dao.WebPageDao;
+import web.app.dao.generic.AbstractBaseDao;
+import web.app.entities.WebPage;
 
 @Repository
 public class WebPageDaoImpl extends AbstractBaseDao<WebPage, Long> implements WebPageDao {

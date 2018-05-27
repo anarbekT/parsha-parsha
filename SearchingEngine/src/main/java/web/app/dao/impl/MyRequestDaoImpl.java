@@ -1,10 +1,10 @@
-package com.example.dao.impl;
+package web.app.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.dao.MyRequestDao;
-import com.example.dao.generic.AbstractBaseDao;
-import com.example.entities.MyRequest;
+import web.app.dao.MyRequestDao;
+import web.app.dao.generic.AbstractBaseDao;
+import web.app.entities.MyRequest;
 
 @Repository
 public class MyRequestDaoImpl extends AbstractBaseDao<MyRequest, Long> implements MyRequestDao {

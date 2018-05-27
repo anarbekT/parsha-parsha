@@ -1,4 +1,4 @@
-package com.example.ui.base;
+package web.app.ui.base;
 
 public class AbstractBasePresenter {
 

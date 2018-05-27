@@ -1,7 +1,7 @@
-package com.example.dao;
+package web.app.dao;
 
-import com.example.dao.generic.BaseDao;
-import com.example.entities.MyRequest;
+import web.app.dao.generic.BaseDao;
+import web.app.entities.MyRequest;
 
 public interface MyRequestDao extends BaseDao<MyRequest, Long>{
 
