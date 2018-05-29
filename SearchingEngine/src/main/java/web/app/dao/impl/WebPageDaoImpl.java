@@ -22,9 +22,7 @@ public class WebPageDaoImpl extends AbstractBaseDao<WebPage, Long> implements We
 		// Search with LIKE
 		Criteria crit = (Criteria) getCurrentSession().createCriteria(WebPage.class)
 				.add(Restrictions.like("webUrl", url));
-
 		List<WebPage> result = crit.list();
-
 		return result;
 	}
 

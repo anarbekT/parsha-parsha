@@ -1,11 +1,9 @@
 package web.app.service;
 
-import java.util.List;
-
-import web.app.entities.WebPage;
+import web.app.entities.MyRequest;
 
 public interface WebService {
-	
-	List<WebPage> sendRequest(String request);
-	
+
+	MyRequest sendRequest(MyRequest request);
+
 }

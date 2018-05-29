@@ -1,45 +1,38 @@
 package web.app.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import lombok.Data;
-import web.app.webservice.PageInfo;
 
 @Data
-@Entity
-@Table(name = "MY_REQUEST")
 @SuppressWarnings("serial")
 public class MyRequest implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "REQUEST_ID")
-	private Long id;
-
-	@Column(name = "NUMBER_OF_RESULT", length = 200)
-	private int numberOfResult;
-	
-
-	@Column(name = "REQUEST_NAME", length = 200)
 	private String request;
-	 	
+
+	private int numberOfResults;
+
+	private List<QueryWord> queryWords;
+
+	private List<PageInfo> webPageOfResult;
 	
-	@OneToMany(mappedBy = "myRequest")
-	private List<QueryWord> allPossibleQuery;
+	public ArrayList<String> getRealQueries(){
+		ArrayList<String> realQueryWords = new ArrayList<>();
+		for(QueryWord queryWord: queryWords){
+			realQueryWords.add(queryWord.getInitialWord());
+		}
+		return realQueryWords;
+	}
 	
-//	@OneToMany(mappedBy = "myRequest")
-	@Transient
-	private List<WebPage> listOfResults;
-	
-	
+	public ArrayList<String> getExtraQueries(){
+		ArrayList<String> extraQueryWords = new ArrayList<>();
+		for(QueryWord queryWord: queryWords){
+			//TODO CHANGE
+			extraQueryWords.add(queryWord.getTempStemOfWord());
+		}
+		return extraQueryWords;
+	}
+
 }

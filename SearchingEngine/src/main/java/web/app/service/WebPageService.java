@@ -2,6 +2,7 @@ package web.app.service;
 
 import java.util.List;
 
+import web.app.entities.PageInfo;
 import web.app.entities.WebPage;
 
 public interface WebPageService {
@@ -14,13 +15,15 @@ public interface WebPageService {
 
 	boolean delete(WebPage entity);
 
-	List<WebPage> findAll();
+	List<PageInfo> findAll();
 	
 	List<WebPage> getWebPagesByUrl(String url);
 	
-	List<WebPage> findWebPagesByUrl(String url);
+	List<PageInfo> findWebPagesByUrl(String url);
 	
-	List<WebPage> findWebPagesByUrlAndKeyword(String url, String keyword);
+	List<WebPage> findWebPagesByUrlAndKeyword(String[] URL_keyword);
 
 	boolean isUrlExist(String url);
+	
+	List<WebPage> scrapFromWeb(String url);
 }

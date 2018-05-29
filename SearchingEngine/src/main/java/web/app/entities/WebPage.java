@@ -26,41 +26,16 @@ public class WebPage implements Serializable {
 	@Column(name = "URL")
 	private String webUrl;
 
-	// @Column(name = "SOURCE")
-	// private String webSource;
-
 	@Column(name = "TITLE")
 	private String webTitle;
 
 	@Column(name = "PARAGRAPH", length = 65535, columnDefinition = "text")
 	private String webParagraph;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "REQUEST_ID")
-	// private MyRequest myRequest;
-
 	@Transient
-	private int realTitleNum = 0;
-	@Transient
-	private int additionalTitleNum = 0;
-	@Transient
-	private int realParagraphNum = 0;
-	@Transient
-	private int additionalParagraphNum = 0;
+	public String viewText = "";
 
-	public void addRealTitleNum(int num) {
-		this.realTitleNum = this.realTitleNum + num;
-	}
-
-	public void addAdditionalTitleNum(int num) {
-		this.additionalTitleNum = this.additionalTitleNum + num;
-	}
-
-	public void addRealParagraphNum(int num) {
-		this.realParagraphNum = this.realParagraphNum + num;
-	}
-
-	public void addAdditionalParagraphNum(int num) {
-		this.additionalParagraphNum = this.additionalParagraphNum + num;
+	public void addToViewText(String text) {
+		viewText += text;
 	}
 }

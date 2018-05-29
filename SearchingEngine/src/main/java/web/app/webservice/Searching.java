@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import web.app.entities.PageInfo;
 import web.app.entities.WebPage;
 import web.app.webservice.presenter.SearchingPresenter;
 
@@ -54,7 +55,7 @@ public class Searching {
 	public void doSearch(String query) {
 		if (query.toLowerCase().contains("site:")) {
 			String regex = "(site:)(\\S+)";
-			Pattern pattern = Pattern.compile(regex);
+			Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(query.toLowerCase());
 			if (matcher.find()) {
 				this.specialUrl = matcher.group(2);
@@ -76,26 +77,20 @@ public class Searching {
 			for (PageInfo currentPage : pageInfo) {
 				String regax = currentWord.toLowerCase() + "\\S+";// +"\\s+";
 				Pattern pattern = Pattern.compile(regax);
-				Matcher matcherTitle = pattern.matcher(currentPage.title.toLowerCase());
-				Matcher matcherParagraph = pattern.matcher(currentPage.paragraph.toLowerCase());
+				Matcher matcherTitle = pattern.matcher(currentPage.getWebPage().getWebTitle().toLowerCase());
+				Matcher matcherParagraph = pattern.matcher(currentPage.getWebPage().getWebParagraph().toLowerCase());
 				Boolean find = false;
-				if (matcherTitle.find()) {
-					// while(matcherTitle.find()){
+				while (matcherTitle.find()) {
 					currentPage.addRealTitleNum(1);
 					currentPage.realHitWords.add(currentWord + " - " + matcherTitle.group() + " - RealFromTitle");
-					// }
+
 					find = true;
 				}
-				if (matcherParagraph.find()) {
-					// while(matcherParagraph.find()){
+				while (matcherParagraph.find()) {
 					currentPage.addRealParagraphNum(1);
 					currentPage.realHitWords
 							.add(currentWord + " - " + matcherParagraph.group() + " - RealFromParagraph");
-					// }
 					find = true;
-				}
-				if (find == false) {
-					currentPage.realHitWords.add(currentWord);
 				}
 			}
 		}
@@ -104,26 +99,19 @@ public class Searching {
 			for (PageInfo currentPage : pageInfo) {
 				String regax = currentWord.toLowerCase() + "\\s+";
 				Pattern pattern = Pattern.compile(regax);
-				Matcher matcherTitle = pattern.matcher(currentPage.title.toLowerCase());
-				Matcher matcherParagraph = pattern.matcher(currentPage.paragraph.toLowerCase());
+				Matcher matcherTitle = pattern.matcher(currentPage.getWebPage().getWebTitle().toLowerCase());
+				Matcher matcherParagraph = pattern.matcher(currentPage.getWebPage().getWebParagraph().toLowerCase());
 				Boolean find = false;
-				if (matcherTitle.find()) {
-					// while(matcherTitle.find()){
+				while (matcherTitle.find()) {
 					currentPage.addAdditionalTitleNum(1);
 					currentPage.additionalHitWords.add(currentWord + " - " + matcherTitle.group() + " - AddFromTitle");
-					// }
 					find = true;
 				}
-				if (matcherParagraph.find()) {
-					// while(matcherParagraph.find()){
+				while (matcherParagraph.find()) {
 					currentPage.addAdditionalParagraphNum(1);
 					currentPage.additionalHitWords
 							.add(currentWord + " - " + matcherParagraph.group() + " - AddFromParagraph");
-					// }
 					find = true;
-				}
-				if (find == false) {
-					currentPage.additionalHitWords.add(currentWord);
 				}
 			}
 		}

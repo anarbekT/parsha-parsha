@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import web.app.entities.PageInfo;
 import web.app.entities.WebPage;
 import web.app.service.WebPageService;
 import web.app.ui.base.AbstractBasePresenter;
-import web.app.webservice.PageInfo;
 import web.app.webservice.ScrapFromWeb;
 
 public class SearchingPresenter extends AbstractBasePresenter {
@@ -39,7 +39,7 @@ public class SearchingPresenter extends AbstractBasePresenter {
 				getDB(specialUrl);
 			}
 		} else {
-			List<WebPage> webPagesByUrl = webService.findAll();
+			List<WebPage> webPagesByUrl = null;
 			if (!webPagesByUrl.isEmpty() || webPagesByUrl != null) {
 				for (WebPage page : webPagesByUrl) {
 					pageInfo.add(new PageInfo(page.getWebUrl(), page.getWebTitle(), page.getWebParagraph()));

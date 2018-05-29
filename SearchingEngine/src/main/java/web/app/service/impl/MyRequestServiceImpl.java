@@ -44,11 +44,10 @@ public class MyRequestServiceImpl implements MyRequestService {
 	}
 
 	@Override
-	public List<QueryWord> getAllPossibleQuery(String mainRequest) {
+	public List<QueryWord> getAllQueryWordsFromRequest(String mainRequest) {
 		mainRequest = stemmer.removeStopWords(mainRequest);
-		List<QueryWord> wordsArray = stemmer.getWordsArray(mainRequest);
+		List<QueryWord> wordsArray = stemmer.getWords(mainRequest);
 		List<QueryWord> wordsWithOutSuffixes = stemmer.removeSuffixes(wordsArray);
-//		List<QueryWord> generateAllPossibleVariants = stemmer.generateAllPossibleVariants(wordsWithOutSuffixes);
 		
 		return wordsWithOutSuffixes;
 	}

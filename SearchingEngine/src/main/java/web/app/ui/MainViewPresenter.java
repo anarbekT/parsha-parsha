@@ -1,4 +1,4 @@
-package web.app.ui.base;
+package web.app.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import web.app.entities.MyRequest;
+import web.app.entities.PageInfo;
 import web.app.entities.QueryWord;
 import web.app.entities.WebPage;
 import web.app.service.MyRequestService;
 import web.app.service.WebPageService;
 import web.app.service.WebService;
-import web.app.webservice.PageInfo;
+import web.app.ui.base.AbstractBasePresenter;
 
 public class MainViewPresenter extends AbstractBasePresenter {
 
@@ -33,13 +34,13 @@ public class MainViewPresenter extends AbstractBasePresenter {
 		return requestService.save(entity);
 	}
 
-	public MyRequest analiseAndSendRequestTemp(String requestedText) {
-		MyRequest request = new MyRequest();
-		List<QueryWord> allPossibleQuery = requestService.getAllPossibleQuery(requestedText);
-		request.setAllPossibleQuery(allPossibleQuery);
+	public MyRequest analiseAndSendRequestTemp(MyRequest request) {
+		List<QueryWord> allQueryWords = requestService.getAllQueryWordsFromRequest(request.getRequest());
+		request.setQueryWords(allQueryWords);
 		
 //		List<WebPage> listOfWebPages = webService.sendRequest(requestedText);
 //		request.setListOfResults(listOfWebPages);
+		request = webService.sendRequest(request);
 		
 		return request;
 	}
@@ -47,13 +48,13 @@ public class MainViewPresenter extends AbstractBasePresenter {
 	public void testMethod() {
 		
 		MyRequest req =  new MyRequest();
-		req.setNumberOfResult(213);
+		req.setNumberOfResults(213);
 		req.setRequest("asdasd");
 		List<QueryWord> allPossibleQuery = new ArrayList<>();
 		QueryWord q = new QueryWord();
-		q.setWord("asdasd");
+		q.setInitialWord("asdasd");
 		allPossibleQuery.add(q);
-		req.setAllPossibleQuery(allPossibleQuery );
+		req.setQueryWords(allPossibleQuery );
 		requestService.save(req);
 		
 		WebPage entity = new WebPage();

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import web.app.entities.QueryWord;
+
 public class WordHandler {
 
 	private static final String BASE_DIR = "src\\main\\resources\\";
@@ -24,14 +26,14 @@ public class WordHandler {
 	private static final String TAUELDIK_ZHALGAU_FILE = "taueldik_zhalgaular.txt";
 
 	public WordHandler() {
-		stopWordsList = initStopWordsListArray(STOP_WORDS_FILE);
-		koptikZhalgauList = initStopWordsListArray(KOPTIK_ZHALGAU_FILE);
-		zhiktikZhalgauList = initStopWordsListArray(ZHIKTIK_ZHALGAU_FILE);
-		taueldikZhalgauList = initStopWordsListArray(TAUELDIK_ZHALGAU_FILE);
-		septikZhalgauList = initStopWordsListArray(SEPTIK_ZHALGAU_FILE);
+		stopWordsList = initArrayList(STOP_WORDS_FILE);
+		koptikZhalgauList = initArrayList(KOPTIK_ZHALGAU_FILE);
+		zhiktikZhalgauList = initArrayList(ZHIKTIK_ZHALGAU_FILE);
+		taueldikZhalgauList = initArrayList(TAUELDIK_ZHALGAU_FILE);
+		septikZhalgauList = initArrayList(SEPTIK_ZHALGAU_FILE);
 	}
 
-	public List<String> initStopWordsListArray(String fileName) {
+	public List<String> initArrayList(String fileName) {
 		List<String> list = new ArrayList<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(BASE_DIR + fileName))) {
@@ -39,7 +41,6 @@ public class WordHandler {
 			String sCurrentLine;
 
 			while ((sCurrentLine = br.readLine()) != null) {
-				// System.out.println(sCurrentLine);
 				list.add(sCurrentLine);
 			}
 
@@ -47,15 +48,7 @@ public class WordHandler {
 			e.printStackTrace();
 		}
 		return list;
-
 	}
-	//
-	// public static void main(String arg[]) {
-	// StopWords o = new StopWords();
-	// o.initStopWordsListArray();
-	//
-	// System.out.println(o.removeStopWords("Отан үшін, жер үшінге бәрін де"));
-	// }
 
 	public String removeStopWords(String text) {
 		for (String stopWord : stopWordsList) {
@@ -65,59 +58,85 @@ public class WordHandler {
 		return text;
 	}
 
-	public String removeKoptikZhalgau(String text) {
+	public String removeKoptikZhalgau(String word) {
+		if(isLengthShorter(word)){
+			return word;
+		}
 		for (String koptikZalgau : koptikZhalgauList) {
 			String regex = koptikZalgau + "$";
-			if (text.endsWith(koptikZalgau)) {
-				text = text.replaceAll(regex, "");
-				break;
+			if (word.endsWith(koptikZalgau)) {
+				word = word.replaceAll(regex, "");
+				return word;
 			}
 		}
-		return text;
+		return null;
 	}
 
-	public String removeZhiktikZhalgau(String text) {
+	public String removeZhiktikZhalgau(String word) {
+		if(isLengthShorter(word)){
+			return word;
+		}
 		for (String zhiktikZalgau : zhiktikZhalgauList) {
 			String regex = zhiktikZalgau + "$";
-			if (text.endsWith(zhiktikZalgau)) {
-				text = text.replaceAll(regex, "");
-				break;
+			if (word.endsWith(zhiktikZalgau)) {
+				word = word.replaceAll(regex, "");
+				return word;
 			}
 
 		}
-		return text;
+		return null;
 	}
 
-	public String removeTaueldikZhalgau(String text) {
-		// boolean isTaueldikExist = false;
-		String temp="";
+	public String removeTaueldikZhalgau(String word) {
+		if(isLengthShorter(word)){
+			return word;
+		}
 		for (String taueldikZalgau : taueldikZhalgauList) {
 			String regex = taueldikZalgau + "$";
-			if (text.endsWith(taueldikZalgau)) {
-				temp = text.replaceAll(regex, "");
-				break;
+			if (word.endsWith(taueldikZalgau)) {
+				word = word.replaceAll(regex, "");
+				return word;
 			}
 		}
-		if(temp.length()<=3){
-			return text;
-		}
-		return temp;
+		return null;
 	}
 
-	public String removeSeptikZhalgau(String text) {
+	public String removeSeptikZhalgau1(QueryWord word) {
 		// if (text.length() <= 4) {
 		// if(isEndsWithVowel(text)){
 		// return text;
 		// }
 		// }
+		String text = word.getInitialWord();
+		boolean isZhanlgauFind = false;
 		for (String septikZalgau : septikZhalgauList) {
 			String regex = septikZalgau + "$";
 			if (text.endsWith(septikZalgau)) {
-				text = text.replaceAll(regex, "");
-				break;
+				isZhanlgauFind = true;
+				String tempStem = text.replaceAll(regex, "");
+				word.getStemOfWord().add(tempStem);
 			}
 		}
-		return text;
+		if (isZhanlgauFind) {
+			return text;
+		} else {
+			return null;
+		}
+	}
+
+	public String removeSeptikZhalgau(String word) {
+		if(isLengthShorter(word)){
+			return word;
+		}
+		for (String septikZalgau : septikZhalgauList) {
+			String regex = septikZalgau + "$";
+			if (word.endsWith(septikZalgau)) {
+				word = word.replaceAll(regex, "");
+				return word;
+			}
+		}
+		return null;
+
 	}
 
 	private boolean isEndsWithVowel(String text) {
@@ -128,6 +147,18 @@ public class WordHandler {
 			}
 		}
 		return false;
+	}
+
+	public boolean isEndsWithSeptik() {
+		return false;
+	}
+	
+	private boolean isLengthShorter(String word){
+		if(word.length()<4){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }
