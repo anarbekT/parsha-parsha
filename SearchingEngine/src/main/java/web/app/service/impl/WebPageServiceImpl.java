@@ -52,7 +52,7 @@ public class WebPageServiceImpl implements WebPageService {
 
 	@Override
 	public List<WebPage> getWebPagesByUrl(String url) {
-		List<WebPage> webPagesByUrl = dao.getWebPagesByUrl(url);
+		List<WebPage> webPagesByUrl = dao.findByUrl_LIKE(url);
 		return webPagesByUrl;
 	}
 
@@ -63,7 +63,13 @@ public class WebPageServiceImpl implements WebPageService {
 
 	@Override
 	public List<PageInfo> findWebPagesByUrl(String url) {
-		List<WebPage> webPages = dao.findByUrl(url);
+		List<WebPage> webPages=null;
+		if(url.endsWith("html") || url.endsWith("htm")){
+			webPages = dao.findByUrl(url);
+		}else {
+			webPages= dao.findByUrl_LIKE(url);
+		}
+		
 		if (webPages.isEmpty()) {
 			webPages = scrapFromWeb(url);
 		}
@@ -113,6 +119,8 @@ public class WebPageServiceImpl implements WebPageService {
 			webPage.setWebTitle(webTitle);
 			webPage.setWebParagraph(webParagraph);
 
+			save(webPage);
+			
 			webPages.add(webPage);
 
 		} catch (IOException ex) {

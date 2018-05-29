@@ -33,6 +33,7 @@ public class MainView extends VerticalLayout implements View {
 	private TextField textSearch;
 	private Button linkOfGoogle;
 	private Button linkOfYandex;
+	private Label results;
 
 	private Grid<WebPage> resultGrid;
 	private Grid<QueryWord> rightGrid;
@@ -147,6 +148,15 @@ public class MainView extends VerticalLayout implements View {
 		horLayout2.addComponent(linkOfYandex);
 
 		addComponent(horLayout2);
+		
+
+		HorizontalLayout horLayoutForResult = new HorizontalLayout();
+		horLayout.setSpacing(true);
+		horLayout.setWidth("80%");
+		results = new Label();
+		horLayoutForResult.addComponent(results);
+		
+		addComponent(horLayoutForResult);
 
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.setSpacing(true);
@@ -167,7 +177,7 @@ public class MainView extends VerticalLayout implements View {
 		MyRequest request = getBean();
 		request = presenter.analiseAndSendRequestTemp(request);
 		rightGrid.setItems(request.getQueryWords());
-		doTextTemp(request.getQueryWords());
+//		doTextTemp(request.getQueryWords());
 		showResultList(request.getWebPageOfResult());
 	}
 
@@ -199,6 +209,8 @@ public class MainView extends VerticalLayout implements View {
 	}
 
 	private void showResultList(List<PageInfo> listOfResults) {
+		setNumberOfResults(listOfResults.size());
+		verLayout.removeAllComponents();
 		for (PageInfo page : listOfResults) {
 			Panel p = new Panel("<h3>" + page.getWebPage().getWebTitle() + "</h3>");
 			HorizontalLayout horL = new HorizontalLayout();
@@ -210,13 +222,17 @@ public class MainView extends VerticalLayout implements View {
 					+ page.getWebPage().getWebUrl() + "</a>"; // <a
 			// href="https://www.w3schools.com">Visit
 			// W3Schools.com!</a>
-			text += "<p>" + page.getWebPage().getWebParagraph().substring(0, 100) + "</p>";
+			text += "<p>" + page.getWebPage().getViewText() + "</p>";
 			Label label = new Label(text, ContentMode.HTML);
 			label.setSizeFull();
 			horL.addComponent(label);
 			p.setContent(horL);
 			verLayout.addComponent(p);
 		}
+	}
+
+	private void setNumberOfResults(int size) {
+		results.setCaption("Results: "+size);
 	}
 
 }

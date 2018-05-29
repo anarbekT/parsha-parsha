@@ -23,10 +23,10 @@ public class WebPage implements Serializable {
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "URL")
+	@Column(name = "URL", length = 1000)
 	private String webUrl;
 
-	@Column(name = "TITLE")
+	@Column(name = "TITLE", length = 32000)
 	private String webTitle;
 
 	@Column(name = "PARAGRAPH", length = 65535, columnDefinition = "text")

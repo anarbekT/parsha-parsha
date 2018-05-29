@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import web.app.entities.MyRequest;
-import web.app.entities.PageInfo;
 import web.app.entities.QueryWord;
 import web.app.entities.WebPage;
 import web.app.service.MyRequestService;

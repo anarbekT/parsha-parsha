@@ -1,6 +1,7 @@
 package web.app.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,15 +30,18 @@ public class WebServiceImpl implements WebService {
 		// Scrap URL goes here
 		boolean withURL;
 		if (URL_Keyword[1] != null) {
-			withURL=true;
+			withURL = true;
 			listOfPageInfo = webPageService.findWebPagesByUrl(URL_Keyword[1]);
 		} else {
-			withURL=false;
+			withURL = false;
 			listOfPageInfo = webPageService.findAll();
 		}
 
 		request.setWebPageOfResult(listOfPageInfo);
-		request.setWebPageOfResult(doSearch(request,withURL));
+		List<PageInfo> searchResult = doSearch(request, withURL);
+		Collections.sort(searchResult);
+		Collections.reverse(searchResult);
+		request.setWebPageOfResult(searchResult);
 		return request;
 	}
 
@@ -48,51 +52,70 @@ public class WebServiceImpl implements WebService {
 		List<PageInfo> pageInfo = request.getWebPageOfResult();
 
 		for (String currentWord : realQueryWords) {
-            for (PageInfo currentPage : pageInfo) {
-                String regax = "((?:\\S+\\s)?\\S*(?:\\S+\\s)?\\S*)(\\b" + currentWord.toLowerCase() + "\\b)(\\S*(?:\\s\\S+)?\\S*(?:\\s\\S+)?)";
-                Pattern pattern = Pattern.compile(regax);
-                Matcher matcherTitle = pattern.matcher(currentPage.getWebPage().getWebTitle().toLowerCase());
-                Matcher matcherParagraph = pattern.matcher(currentPage.getWebPage().getWebParagraph().toLowerCase());
-                while (matcherTitle.find()) {
-                    currentPage.addRealTitleNum(1);
-                    currentPage.realHitWords.add(matcherTitle.group(2));
-                }
-                while (matcherParagraph.find()) {
-                    currentPage.addRealParagraphNum(1);
-                    currentPage.realHitWords.add(matcherParagraph.group(2));
-                    String tempText= currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(1), matcherParagraph.end(1)) + "<b>" + currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(2), matcherParagraph.end(2)) + "</b>" + currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(3), matcherParagraph.end(3)) + " ... ";
-                    currentPage.getWebPage().addToViewText(tempText);
-                }
-            }
-        }
-
-        for (String currentWord : additionalQueryWords) {
-            for (PageInfo currentPage : pageInfo) {
-                String regax = "((?:\\S+\\s)?\\S*(?:\\S+\\s)?\\S*)(" + currentWord.toLowerCase() + ")(\\S+)(\\S*(?:\\s\\S+)?\\S*(?:\\s\\S+)?)";
-                Pattern pattern = Pattern.compile(regax);
-                Matcher matcherTitle = pattern.matcher(currentPage.getWebPage().getWebTitle().toLowerCase());
-                Matcher matcherParagraph = pattern.matcher(currentPage.getWebPage().getWebParagraph().toLowerCase());
-                while (matcherTitle.find()) {
-                    if (!currentPage.realHitWords.contains(matcherTitle.group(2) + matcherTitle.group(3))) {
-                        currentPage.addAdditionalTitleNum(1);
-                        currentPage.additionalHitWords.add(matcherTitle.group(2) + matcherTitle.group(3));
-                    }
-                }
-                while (matcherParagraph.find()) {
-                    if (!currentPage.realHitWords.contains(matcherParagraph.group(2) + matcherParagraph.group(3))) {
-                        currentPage.addAdditionalParagraphNum(1);
-                        currentPage.additionalHitWords.add(matcherParagraph.group(2) + matcherParagraph.group(3));
-                        String tempText= currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(1), matcherParagraph.end(1)) + "<b>" + currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(2), matcherParagraph.end(2)) + "</b>" + currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(3), matcherParagraph.end(3)) + currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(4), matcherParagraph.end(4)) + " ... ";
-                        currentPage.getWebPage().addToViewText(tempText);
-                    }
-                }
-                //Тексеру үшін
-//                log(currentPage.viewText);
-            }
-        }
-		if (!withURL) {
-			pageInfo.removeIf(obj -> obj.getRealValue() == 0 && obj.getAdditionalValue() == 0);
+			for (PageInfo currentPage : pageInfo) {
+				String regax = "((?:\\S+\\s)?\\S*(?:\\S+\\s)?\\S*)(\\b" + currentWord.toLowerCase()
+						+ "\\b)(\\S*(?:\\s\\S+)?\\S*(?:\\s\\S+)?)";
+				Pattern pattern = Pattern.compile(regax);
+				Matcher matcherTitle = pattern.matcher(currentPage.getWebPage().getWebTitle().toLowerCase());
+				Matcher matcherParagraph = pattern.matcher(currentPage.getWebPage().getWebParagraph().toLowerCase());
+				while (matcherTitle.find()) {
+					currentPage.addRealTitleNum(1);
+					currentPage.realHitWords.add(matcherTitle.group(2));
+				}
+				while (matcherParagraph.find()) {
+					currentPage.addRealParagraphNum(1);
+					currentPage.realHitWords.add(matcherParagraph.group(2));
+					String tempText = currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(1),
+							matcherParagraph.end(1))
+							+ "<b>"
+							+ currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(2),
+									matcherParagraph.end(2))
+							+ "</b>" + currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(3),
+									matcherParagraph.end(3))
+							+ " ... ";
+					currentPage.getWebPage().addToViewText(tempText);
+				}
+			}
 		}
+
+		for (String currentWord : additionalQueryWords) {
+			for (PageInfo currentPage : pageInfo) {
+				String regax = "((?:\\S+\\s)?\\S*(?:\\S+\\s)?\\S*)(" + currentWord.toLowerCase()
+						+ ")(\\S+)(\\S*(?:\\s\\S+)?\\S*(?:\\s\\S+)?)";
+				Pattern pattern = Pattern.compile(regax);
+				Matcher matcherTitle = pattern.matcher(currentPage.getWebPage().getWebTitle().toLowerCase());
+				Matcher matcherParagraph = pattern.matcher(currentPage.getWebPage().getWebParagraph().toLowerCase());
+				while (matcherTitle.find()) {
+					if (!currentPage.realHitWords.contains(matcherTitle.group(2) + matcherTitle.group(3))) {
+						currentPage.addAdditionalTitleNum(1);
+						currentPage.additionalHitWords.add(matcherTitle.group(2) + matcherTitle.group(3));
+					}
+				}
+				while (matcherParagraph.find()) {
+					if (!currentPage.realHitWords.contains(matcherParagraph.group(2) + matcherParagraph.group(3))) {
+						currentPage.addAdditionalParagraphNum(1);
+						currentPage.additionalHitWords.add(matcherParagraph.group(2) + matcherParagraph.group(3));
+						String tempText = currentPage.getWebPage().getWebParagraph()
+								.substring(matcherParagraph.start(1), matcherParagraph.end(1))
+								+ "<b>"
+								+ currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(2),
+										matcherParagraph.end(2))
+								+ "</b>"
+								+ currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(3),
+										matcherParagraph.end(3))
+								+ currentPage.getWebPage().getWebParagraph().substring(matcherParagraph.start(4),
+										matcherParagraph.end(4))
+								+ " ... ";
+						currentPage.getWebPage().addToViewText(tempText);
+					}
+				}
+				// Тексеру үшін
+				// log(currentPage.viewText);
+			}
+		}
+
+//		pageInfo.removeIf(obj -> obj.getRealValue() == 0 && obj.getAdditionalValue() == 0);
+		pageInfo.removeIf(item->item.getWebPage().getViewText().length()==0);
 		return pageInfo;
 	}
 

@@ -7,7 +7,7 @@ import web.app.entities.WebPage;
 
 public interface WebPageDao extends BaseDao<WebPage, Long>{
 
-	List<WebPage> getWebPagesByUrl(String url);
+	List<WebPage> findByUrl_LIKE(String url);
 	
 	List<WebPage> findByUrl(String url);
 	

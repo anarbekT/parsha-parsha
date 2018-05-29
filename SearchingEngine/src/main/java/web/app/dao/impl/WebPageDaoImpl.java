@@ -18,10 +18,10 @@ public class WebPageDaoImpl extends AbstractBaseDao<WebPage, Long> implements We
 	}
 
 	@Override
-	public List<WebPage> getWebPagesByUrl(String url) {
+	public List<WebPage> findByUrl_LIKE(String url) {
 		// Search with LIKE
 		Criteria crit = (Criteria) getCurrentSession().createCriteria(WebPage.class)
-				.add(Restrictions.like("webUrl", url));
+				.add(Restrictions.like("webUrl", "%" + url + "%"));
 		List<WebPage> result = crit.list();
 		return result;
 	}
@@ -30,7 +30,6 @@ public class WebPageDaoImpl extends AbstractBaseDao<WebPage, Long> implements We
 	public List<WebPage> findByUrl(String url) {
 		Criteria crit = (Criteria) getCurrentSession().createCriteria(WebPage.class)
 				.add(Restrictions.eq("webUrl", url));
-
 		List<WebPage> result = crit.list();
 		return result;
 	}
@@ -40,16 +39,14 @@ public class WebPageDaoImpl extends AbstractBaseDao<WebPage, Long> implements We
 		Criteria crit = (Criteria) getCurrentSession().createCriteria(WebPage.class);
 
 		crit.add(Restrictions.eq("webUrl", url))
-		.add(Restrictions.or(
-				Restrictions.ilike("webTitle", "%" + keyword.trim() + "%"),
-				Restrictions.ilike("webParagraph", "%" + keyword.trim() + "%")
-				 ));
-		
+				.add(Restrictions.or(Restrictions.ilike("webTitle", "%" + keyword.trim() + "%"),
+						Restrictions.ilike("webParagraph", "%" + keyword.trim() + "%")));
+
 		// .add( Restrictions.like("webTitle", keyword.trim()));
-//		 .add(Restrictions.or(
-//		 Restrictions.like("webTitle", keyword),
-//		 Restrictions.like("webParagraph", keyword)
-//		 ));
+		// .add(Restrictions.or(
+		// Restrictions.like("webTitle", keyword),
+		// Restrictions.like("webParagraph", keyword)
+		// ));
 		// crit.add(Restrictions.like("webTitle", keyword));
 		// crit.add(Restrictions.like("webParagraph", keyword));
 
